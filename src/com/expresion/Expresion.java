@@ -51,12 +51,12 @@ public class Expresion {
     			if (!num.equals("")) {
 					infija.apilar(num);
 					num="";
-				}
-    			infija.apilar(cadena.charAt(i));
-			}else{
-				num=num+String.valueOf(this.cadena.charAt(i));
 			}
+    			infija.apilar(cadena.charAt(i));
+		}else{
+			num=num+String.valueOf(this.cadena.charAt(i));
 		}
+	}
         return infija;
     }
     
@@ -65,12 +65,13 @@ public class Expresion {
     
     public Pila notacionPosfija(Pila infija){
        Pila infijaMod=invertirElementos(infija);
+
         while (!infijaMod.estaVacia()) {            
             String str = String.valueOf(infijaMod.verCima());
-            System.out.println(str);
             operador.mostrar();
             posfija.mostrar();
             System.out.println("----------");
+            System.out.println(str);
             if (isOperador(str)) {
                 if (operador.estaVacia()) {
                     operador.apilar(infijaMod.desapilar());
@@ -95,49 +96,56 @@ public class Expresion {
                             break;
                         case "-":
                         	String ope6=String.valueOf(operador.verCima());
-                            if (ope6.equals("+")) {
-                                posfija.apilar(operador.desapilar());
-                                operador.apilar(str);
-                            } else if((ope6.equals("*")) || (ope6.equals("/")) || (ope6.equals("^"))){
-                            	while(!ope6.equals("(")){
-                    				posfija.apilar(operador.desapilar());
-                    				
-                    				ope6=String.valueOf(operador.verCima());
-                            	}
-                            	operador.apilar(infijaMod.desapilar());
-                            }else{
-                                operador.apilar(infijaMod.desapilar());
-                            }
-                            break;
+                                if (ope6.equals("+")) {
+                                    posfija.apilar(operador.desapilar());
+                                    operador.apilar(infijaMod.desapilar());
+                                } else if((ope6.equals("*")) || (ope6.equals("/")) || (ope6.equals("^"))){
+                                    while(!ope6.equals("(")){
+                                                    posfija.apilar(operador.desapilar());
+
+                                                    ope6=String.valueOf(operador.verCima());
+                                    }
+                                    operador.apilar(infijaMod.desapilar());
+                                }else{
+                                    operador.apilar(infijaMod.desapilar());
+                                }
+                                break;
                         case "*":
                         	String ope3=String.valueOf(operador.verCima());
                             if (ope3.equals("/")) {
                                 posfija.apilar(operador.desapilar());
                                 operador.apilar(str);
                             } else if((ope3.equals("^"))){
-                            		while(!ope3.equals("(")){
+                            	while(!ope3.equals("(")){
                             				posfija.apilar(operador.desapilar());
                             				ope3=String.valueOf(operador.verCima());
-                                    }
+                                }
                                 operador.apilar(infijaMod.desapilar());
                             }else{
                                 operador.apilar(infijaMod.desapilar());
                             }
                             break;
                         case "/":
-                            if (operador.verCima().equals("*")) {
+                            if (operador.verCima().toString().equals("*")) {
+                                
                                 posfija.apilar(operador.desapilar());
                                 operador.apilar(str);
-                            } else if((operador.verCima().equals("^")) || (operador.verCima().equals("("))){
-                                operador.apilar(str);
+                            } else if((operador.verCima().toString().equals("^")) || (operador.verCima().toString().equals("("))){
+                                while(!operador.verCima().toString().equals("(")){
+                    			posfija.apilar(operador.desapilar());
+                    	
+                            	}
+                            	operador.apilar(infijaMod.desapilar());
+                                //operador.apilar(infijaMod.desapilar());
                             }else{
+                                JOptionPane.showMessageDialog(null, "opcion 3");
                                 while(!operador.estaVacia()){
                                     posfija.apilar(operador.desapilar());
                                 }
                             }
                             break;
                         case "^":
-                        	String ope2=String.valueOf(operador.verCima());
+                            String ope2=String.valueOf(operador.verCima());
                             if((ope2.equals("("))){
                                 operador.apilar(infijaMod.desapilar());
                             }else{
@@ -153,9 +161,9 @@ public class Expresion {
                         	String ope4=String.valueOf(operador.verCima());
                         	while(!ope4.equals("(")){
                         	//	System.out.println(ope4);
-                                posfija.apilar(operador.desapilar());
-                                ope4=String.valueOf(operador.verCima());
-                            }
+                                    posfija.apilar(operador.desapilar());
+                                    ope4=String.valueOf(operador.verCima());
+                                }
                         	operador.desapilar();
                         	infijaMod.desapilar();
                             break;
